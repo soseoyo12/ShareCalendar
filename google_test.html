@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Calendar API 직접 테스트</title>
+</head>
+<body>
+    <h1>Google Calendar API 직접 테스트</h1>
+    <div>
+        <label>API Key: </label>
+        <input type="text" id="apiKey" value="AIzaSyALTLsgQrpaOiI5lViy_SRS3FPpYl33yUg" style="width: 400px;">
+    </div>
+    <br>
+    <button onclick="testAPI()">API 테스트</button>
+    <button onclick="testWithoutDiscovery()">Discovery Doc 없이 테스트</button>
+    <div id="result" style="margin-top: 20px; padding: 10px; border: 1px solid #ccc;"></div>
+
+    <script src="https://apis.google.com/js/api.js"></script>
+    <script>
+        function testAPI() {
+            const apiKey = document.getElementById('apiKey').value;
+            const result = document.getElementById('result');
+            
+            result.innerHTML = '테스트 중...';
+            
+            gapi.load('client', async () => {
+                try {
+                    await gapi.client.init({
+                        apiKey: apiKey,
+                        discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'],
+                    });
+                    
+                    result.innerHTML = '✅ Google API 초기화 성공!<br>gapi.client.calendar: ' + (gapi.client.calendar ? '사용 가능' : '사용 불가');
+                } catch (error) {
+                    result.innerHTML = '❌ Google API 초기화 실패:<br>' + JSON.stringify(error, null, 2);
+                    console.error('API 초기화 실패:', error);
+                }
+            });
+        }
+        
+        function testWithoutDiscovery() {
+            const apiKey = document.getElementById('apiKey').value;
+            const result = document.getElementById('result');
+            
+            result.innerHTML = 'Discovery Doc 없이 테스트 중...';
+            
+            gapi.load('client', async () => {
+                try {
+                    await gapi.client.init({
+                        apiKey: apiKey,
+                    });
+                    
+                    result.innerHTML = '✅ 기본 Google API 초기화 성공!<br>이제 수동으로 Calendar API 로드 시도...';
+                    
+                    // 수동으로 Calendar API 로드
+                    try {
+                        await gapi.client.load('calendar', 'v3');
+                        result.innerHTML += '<br>✅ Calendar API 수동 로드 성공!';
+                    } catch (loadError) {
+                        result.innerHTML += '<br>❌ Calendar API 수동 로드 실패: ' + JSON.stringify(loadError, null, 2);
+                    }
+                    
+                } catch (error) {
+                    result.innerHTML = '❌ 기본 API 초기화도 실패:<br>' + JSON.stringify(error, null, 2);
+                    console.error('기본 API 초기화 실패:', error);
+                }
+            });
+        }
+        
+        // 페이지 로드시 gapi 상태 확인
+        window.onload = function() {
+            setTimeout(() => {
+                const result = document.getElementById('result');
+                result.innerHTML = `
+                    <strong>초기 상태 확인:</strong><br>
+                    gapi 로드됨: ${typeof gapi !== 'undefined'}<br>
+                    gapi.client 사용 가능: ${typeof gapi !== 'undefined' && gapi.client ? '예' : '아니오'}<br>
+                    현재 시간: ${new Date().toLocaleString()}
+                `;
+            }, 1000);
+        };
+    </script>
+</body>
+</html>

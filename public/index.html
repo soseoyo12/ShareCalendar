@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>캘린더 공유 - 일정 조율 v4.3</title>
+    <link rel="stylesheet" href="styles.css?v=4.3">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📅 일정 조율하기</h1>
+            <p>여러 사람의 일정을 확인하고 최적의 시간을 찾아보세요</p>
+        </header>
+
+        <main>
+            <div class="step-container">
+                <div class="step active" id="step1">
+                    <h2>1단계: 본인의 일정 설정</h2>
+                    <div class="schedule-input">
+                        <div class="input-method">
+                            <h3>일정 입력 방법 선택</h3>
+                            <div class="method-buttons">
+                                <button class="method-btn active" data-method="manual">직접 선택</button>
+                                <button class="method-btn" data-method="google">구글 캘린더</button>
+                                <button class="method-btn disabled" data-method="apple" disabled title="웹에서는 애플 캘린더 연동이 지원되지 않습니다">애플 캘린더</button>
+                            </div>
+                        </div>
+
+                        <div class="manual-input" id="manualInput">
+                            <h3>언제 만날까요?</h3>
+                            <div class="date-range">
+                                <label for="startDate">시작 날짜:</label>
+                                <input type="date" id="startDate" name="startDate">
+                                <label for="endDate">종료 날짜:</label>
+                                <input type="date" id="endDate" name="endDate">
+                            </div>
+                            
+                            <div class="time-grid" id="timeGrid">
+                                <!-- 시간 그리드가 여기에 생성됩니다 -->
+                            </div>
+                        </div>
+
+                        <div class="calendar-integration hidden" id="calendarIntegration">
+                            <h4>구글 캘린더에서 일정 가져오기</h4>
+                            <p>구글 캘린더에서 기존 일정을 불러와서 자동으로 바쁜 시간으로 설정할 수 있습니다.</p>
+                            <button class="integration-btn" id="googleSignInBtn" disabled>구글 캘린더 연동</button>
+                            <div id="calendarLoadingStatus" class="calendar-status hidden">
+                                <div class="loading-spinner"></div>
+                                <p>캘린더 일정을 불러오는 중...</p>
+                            </div>
+                            <div id="calendarImportResult" class="calendar-result hidden">
+                                <h5>가져온 일정:</h5>
+                                <div id="importedEventsList"></div>
+                                <button class="apply-calendar-btn" id="applyCalendarBtn">선택된 날짜 범위에 적용</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="user-info">
+                        <h3>참여자 정보</h3>
+                        <input type="text" id="userName" placeholder="이름을 입력하세요" required>
+                        <div class="privacy-options">
+                            <label>
+                                <input type="checkbox" id="showDetails"> 
+                                세부 일정 정보 공개 (일정 이름, 장소 등)
+                            </label>
+                        </div>
+                    </div>
+
+                    <button class="next-btn" id="nextStep">다음 단계</button>
+                </div>
+
+                <div class="step" id="step2">
+                    <h2>2단계: 다른 사람 초대</h2>
+                    <div class="invite-section">
+                        <h3>공유 링크</h3>
+                        <div class="link-container">
+                            <input type="text" id="shareLink" readonly>
+                            <button class="copy-btn" id="copyLink">복사</button>
+                        </div>
+                        <p>이 링크를 친구들에게 공유하세요!</p>
+                    </div>
+
+                    <div class="participants-list">
+                        <h3>참여자 목록</h3>
+                        <div id="participantsList">
+                            <!-- 참여자 목록이 여기에 표시됩니다 -->
+                        </div>
+                    </div>
+
+                    <button class="view-results-btn" id="viewResults">결과 보기</button>
+                </div>
+
+                <div class="step" id="step3">
+                    <h2>3단계: 최적 시간 확인</h2>
+                    <div class="results-container">
+                        <div class="best-times">
+                            <h3>🎯 추천 시간</h3>
+                            <div id="bestTimesList">
+                                <!-- 최적 시간 목록이 여기에 표시됩니다 -->
+                            </div>
+                        </div>
+
+                        <div class="availability-heatmap">
+                            <h3>📊 시간별 가능 인원</h3>
+                            <div id="heatmapContainer">
+                                <!-- 히트맵이 여기에 표시됩니다 -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="final-actions">
+                        <button class="add-to-calendar-btn" id="addToCalendar">캘린더에 추가</button>
+                        <button class="share-result-btn" id="shareResult">결과 공유</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+    
+    <!-- Firebase 설정 -->
+    <script src="firebase-config.js"></script>
+    
+    <!-- Google API -->
+    <script src="https://apis.google.com/js/api.js"></script>
+    <script src="https://accounts.google.com/gsi/client"></script>
+    
+    <script src="script.js?v=2025071502"></script>
+</body>
+</html>

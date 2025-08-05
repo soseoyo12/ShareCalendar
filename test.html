@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Calendar API 테스트</title>
+</head>
+<body>
+    <h1>Google Calendar API 테스트</h1>
+    <button id="testBtn">Google API 테스트</button>
+    <div id="result"></div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+    
+    <!-- Firebase 설정 -->
+    <script src="firebase-config.js"></script>
+    
+    <!-- Google API -->
+    <script src="https://apis.google.com/js/api.js"></script>
+    <script src="https://accounts.google.com/gsi/client"></script>
+    
+    <script>
+        document.getElementById('testBtn').addEventListener('click', function() {
+            const result = document.getElementById('result');
+            
+            result.innerHTML = `
+                <h3>테스트 결과:</h3>
+                <p>Firebase 로드: ${typeof firebase !== 'undefined' ? '✅' : '❌'}</p>
+                <p>Google API 로드: ${typeof gapi !== 'undefined' ? '✅' : '❌'}</p>
+                <p>Google Identity 로드: ${typeof google !== 'undefined' ? '✅' : '❌'}</p>
+                <p>Google Config 로드: ${typeof googleConfig !== 'undefined' ? '✅' : '❌'}</p>
+                <p>Database 연결: ${typeof database !== 'undefined' ? '✅' : '❌'}</p>
+            `;
+            
+            if (typeof googleConfig !== 'undefined') {
+                result.innerHTML += `
+                    <h4>Google Config:</h4>
+                    <p>Client ID: ${googleConfig.CLIENT_ID}</p>
+                    <p>API Key: ${googleConfig.API_KEY}</p>
+                `;
+            }
+        });
+    </script>
+</body>
+</html>
