@@ -28,4 +28,33 @@ node_modules/
 
 # Firebase config with sensitive data (keep the template)
 GoogleService-Info.plist
-EOF < /dev/null
+firebase-config.js
+public/firebase-config.js
+
+# API Keys and sensitive configuration
+*.plist
+google-services.json
+GoogleService-Info.plist
+
+# Development and test files
+test.html
+google_test.html
+clear_cache.html
+
+# Xcode user-specific files
+*.xcuserstate
+*.xcuserdatad/
+xcuserdata/
+DerivedData/
+*.xcworkspace/xcuserdata/
+
+# Build outputs
+build/
+dist/
+*.ipa
+*.app
+
+# Cache and temporary files
+.cache/
+tmp/
+temp/
